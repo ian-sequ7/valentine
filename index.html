@@ -820,6 +820,284 @@
     }
 
     /* ============================================================
+       MUSIC TOGGLE BUTTON (Feature 1)
+       ============================================================ */
+    .music-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--paper);
+      border: 1px solid rgba(212, 165, 116, 0.3);
+      box-shadow: 0 4px 12px var(--shadow-deep);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 9998;
+      transition: all 0.3s ease;
+      font-size: 18px;
+      color: var(--secondary);
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .music-toggle:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px var(--shadow-soft);
+    }
+
+    .music-toggle.playing {
+      animation: musicPulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes musicPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+    }
+
+    .music-toggle.playing::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 2px solid var(--accent-gold);
+      opacity: 0.4;
+      animation: vinylRotate 3s linear infinite;
+    }
+
+    @keyframes vinylRotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .music-toggle.paused {
+      opacity: 0.6;
+    }
+
+    /* Now playing toast */
+    .music-toast {
+      position: fixed;
+      bottom: 75px;
+      right: 20px;
+      background: var(--paper);
+      padding: 10px 16px;
+      border-radius: 8px;
+      box-shadow: 0 4px 16px var(--shadow-soft);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+      z-index: 9998;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.4s ease;
+      pointer-events: none;
+    }
+
+    .music-toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ============================================================
+       ENVELOPE ANIMATION (Feature 2)
+       ============================================================ */
+    .envelope-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--overlay);
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .envelope-overlay.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    .envelope-container {
+      perspective: 800px;
+      position: relative;
+    }
+
+    .envelope {
+      width: 280px;
+      height: 180px;
+      position: relative;
+      transform-style: preserve-3d;
+    }
+
+    .envelope-body {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: var(--paper);
+      border-radius: 4px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    }
+
+    .envelope-flap {
+      position: absolute;
+      width: 100%;
+      height: 50%;
+      background: linear-gradient(to bottom, #f5ede3, var(--paper));
+      top: 0;
+      left: 0;
+      transform-origin: top center;
+      border-radius: 4px 4px 0 0;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      z-index: 3;
+    }
+
+    .envelope-flap::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 100%;
+      background: linear-gradient(135deg, transparent 49.5%, #f5ede3 49.5%, #f5ede3 50.5%, transparent 50.5%),
+                  linear-gradient(-135deg, transparent 49.5%, #f5ede3 49.5%, #f5ede3 50.5%, transparent 50.5%);
+      background-size: 100% 100%;
+      background-position: center;
+      border-radius: 4px 4px 0 0;
+    }
+
+    .heart-seal {
+      position: absolute;
+      top: 38%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 32px;
+      color: var(--secondary);
+      z-index: 4;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+    }
+
+    .letter-paper {
+      position: absolute;
+      width: 90%;
+      height: 75%;
+      background: #fefcf9;
+      top: 12%;
+      left: 5%;
+      border-radius: 2px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      z-index: 2;
+    }
+
+    /* Animations */
+    .envelope-container.animate .envelope {
+      animation: envelopeEntry 0.3s ease forwards;
+    }
+
+    .envelope-container.animate .heart-seal {
+      animation: sealGlow 0.3s ease 0.3s forwards;
+    }
+
+    .envelope-container.animate .envelope-flap {
+      animation: flapOpen 0.6s ease 0.6s forwards;
+    }
+
+    .envelope-container.animate .letter-paper {
+      animation: letterSlideOut 0.6s ease 1.2s forwards;
+    }
+
+    .envelope-overlay.fade-out {
+      animation: fadeOut 0.4s ease 1.8s forwards;
+    }
+
+    @keyframes envelopeEntry {
+      from {
+        opacity: 0;
+        transform: scale(0.8) translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    @keyframes sealGlow {
+      0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+      }
+      50% {
+        transform: translate(-50%, -50%) scale(1.15);
+        filter: drop-shadow(0 0 12px rgba(212, 66, 77, 0.6));
+      }
+    }
+
+    @keyframes flapOpen {
+      from {
+        transform: rotateX(0deg);
+      }
+      to {
+        transform: rotateX(-180deg);
+      }
+    }
+
+    @keyframes letterSlideOut {
+      from {
+        transform: translateY(0);
+      }
+      to {
+        transform: translateY(-120px);
+      }
+    }
+
+    @keyframes fadeOut {
+      to {
+        opacity: 0;
+      }
+    }
+
+    /* ============================================================
+       TOGETHER COUNTER (Feature 3)
+       ============================================================ */
+    .together-counter {
+      text-align: center;
+      margin: 48px 0 56px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease 0.6s, transform 0.6s ease 0.6s;
+    }
+
+    .together-counter.animate-in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .counter-number {
+      font-family: 'Caveat', cursive;
+      font-weight: 700;
+      font-size: 56px;
+      color: var(--secondary);
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+
+    .counter-label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-light);
+      font-style: italic;
+    }
+
+    /* ============================================================
        MOBILE RESPONSIVE
        ============================================================ */
     @media (max-width: 600px) {
@@ -956,6 +1234,12 @@
     <div class="yay-header" id="yay-header">YAY!</div>
     <div class="celebration-message" id="celebration-msg">You just made me the happiest person!</div>
 
+    <!-- Together Counter (Feature 3) -->
+    <div class="together-counter" id="together-counter">
+      <div class="counter-number">♥ <span id="days-together">0</span> days ♥</div>
+      <div class="counter-label">...of loving you and counting</div>
+    </div>
+
     <!-- Reasons I Love You -->
     <div class="reasons-section">
       <div class="reasons-title">Reasons I Love You</div>
@@ -979,7 +1263,7 @@
     <div class="timeline" id="timeline"></div>
     <div class="footer-heart">&#10084;</div>
     <div class="footer-text">Happy Valentine's Day, my love</div>
-    <button class="btn-next letter-btn" onclick="showScreen('screen-letter')">P.S. I didn't forget your letter &#128140;</button>
+    <button class="btn-next letter-btn" onclick="openLetterEnvelope()">P.S. I didn't forget your letter &#128140;</button>
   </div>
 
   <!-- ============================================================
@@ -1014,10 +1298,39 @@
     </div>
   </div>
 
+  <!-- ============================================================
+       MUSIC TOGGLE (Feature 1)
+       ============================================================ -->
+  <audio id="background-music" loop></audio>
+  <div class="music-toggle paused" id="music-toggle" style="display: none;">
+    <span id="music-icon">♪</span>
+  </div>
+  <div class="music-toast" id="music-toast">Now playing ♪</div>
+
+  <!-- ============================================================
+       ENVELOPE ANIMATION (Feature 2)
+       ============================================================ -->
+  <div class="envelope-overlay" id="envelope-overlay">
+    <div class="envelope-container" id="envelope-container">
+      <div class="envelope">
+        <div class="envelope-body"></div>
+        <div class="letter-paper"></div>
+        <div class="envelope-flap"></div>
+        <div class="heart-seal">♥</div>
+      </div>
+    </div>
+  </div>
+
   <script>
     /* ==============================================================
        CUSTOMIZABLE DATA — EDIT THESE TO PERSONALIZE
        ============================================================== */
+
+    /* CUSTOMIZE: paste your song URL here (MP3 or direct link) */
+    const MUSIC_URL = 'the-pool-steph.m4a';
+
+    /* CUSTOMIZE: your anniversary date YYYY-MM-DD */
+    const TOGETHER_SINCE = '2024-12-04';
 
     const NO_PHRASES = [
       "No",
@@ -1223,10 +1536,12 @@
     function animateCelebration() {
       var yay = document.getElementById('yay-header');
       var msg = document.getElementById('celebration-msg');
+      var counter = document.getElementById('together-counter');
       msg.textContent = CELEBRATION_MESSAGE;
 
       setTimeout(function() { yay.classList.add('animate-in'); }, 100);
       setTimeout(function() { msg.classList.add('animate-in'); }, 300);
+      setTimeout(function() { counter.classList.add('animate-in'); }, 500);
 
       /* Observe reason items for scroll-based fade-in */
       var reasons = document.querySelectorAll('.reason-item');
@@ -1444,6 +1759,82 @@
     }
 
     /* ==============================================================
+       FEATURE 1: BACKGROUND MUSIC
+       ============================================================== */
+
+    var musicAudio = document.getElementById('background-music');
+    var musicToggle = document.getElementById('music-toggle');
+    var musicIcon = document.getElementById('music-icon');
+    var musicToast = document.getElementById('music-toast');
+    var isFirstPlay = true;
+
+    function initMusic() {
+      if (MUSIC_URL && MUSIC_URL.trim() !== '') {
+        musicAudio.src = MUSIC_URL;
+        musicToggle.style.display = 'flex';
+      }
+    }
+
+    musicToggle.addEventListener('click', function() {
+      if (musicAudio.paused) {
+        musicAudio.play().then(function() {
+          musicToggle.classList.remove('paused');
+          musicToggle.classList.add('playing');
+
+          if (isFirstPlay) {
+            musicToast.classList.add('show');
+            setTimeout(function() {
+              musicToast.classList.remove('show');
+            }, 2000);
+            isFirstPlay = false;
+          }
+        }).catch(function(error) {
+          console.log('Music playback failed:', error);
+        });
+      } else {
+        musicAudio.pause();
+        musicToggle.classList.remove('playing');
+        musicToggle.classList.add('paused');
+      }
+    });
+
+    /* ==============================================================
+       FEATURE 2: ENVELOPE OPENING ANIMATION
+       ============================================================== */
+
+    function openLetterEnvelope() {
+      var overlay = document.getElementById('envelope-overlay');
+      var container = document.getElementById('envelope-container');
+
+      overlay.classList.add('active');
+
+      setTimeout(function() {
+        container.classList.add('animate');
+        overlay.classList.add('fade-out');
+      }, 50);
+
+      setTimeout(function() {
+        showScreen('screen-letter');
+        overlay.classList.remove('active', 'fade-out');
+        container.classList.remove('animate');
+      }, 2200);
+    }
+
+    /* ==============================================================
+       FEATURE 3: TOGETHER COUNTER
+       ============================================================== */
+
+    function calculateDaysTogether() {
+      if (TOGETHER_SINCE && TOGETHER_SINCE.trim() !== '') {
+        var startDate = new Date(TOGETHER_SINCE);
+        var today = new Date();
+        var diffTime = today - startDate;
+        var diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        document.getElementById('days-together').textContent = diffDays;
+      }
+    }
+
+    /* ==============================================================
        INITIALIZATION
        ============================================================== */
 
@@ -1453,6 +1844,8 @@
       createPhotoGrid();
       createTimeline();
       createLetterContent();
+      initMusic();
+      calculateDaysTogether();
     });
   </script>
 </body>
