@@ -284,17 +284,43 @@
       transform: scale(1) rotate(2deg);
     }
 
+    .celebration-hero {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .hero-days {
+      font-family: 'Caveat', cursive;
+      font-weight: 700;
+      font-size: 28px;
+      color: var(--primary);
+      margin-bottom: 16px;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: all 0.6s ease 0.3s;
+    }
+
+    .hero-days.animate-in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .hero-days span {
+      color: var(--secondary);
+      font-size: 32px;
+    }
+
     .celebration-message {
       font-family: 'DM Sans', sans-serif;
-      font-size: 19px;
+      font-size: 17px;
       font-weight: 500;
-      color: var(--text);
-      margin-bottom: 56px;
+      color: var(--text-light);
       opacity: 0;
-      transform: translateY(16px);
-      transition: all 0.6s ease 0.4s;
+      transform: translateY(12px);
+      transition: all 0.6s ease 0.5s;
       text-align: center;
       max-width: 400px;
+      margin: 0 auto;
     }
 
     .celebration-message.animate-in {
@@ -1081,38 +1107,7 @@
       }
     }
 
-    /* ============================================================
-       TOGETHER COUNTER (Feature 3)
-       ============================================================ */
-    .together-counter {
-      text-align: center;
-      margin: 48px 0 56px;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.6s ease 0.6s, transform 0.6s ease 0.6s;
-    }
-
-    .together-counter.animate-in {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .counter-number {
-      font-family: 'Caveat', cursive;
-      font-weight: 700;
-      font-size: 56px;
-      color: var(--secondary);
-      line-height: 1;
-      margin-bottom: 12px;
-    }
-
-    .counter-label {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--text-light);
-      font-style: italic;
-    }
+    /* (Together counter styles merged into .hero-days above) */
 
     /* ============================================================
        MOBILE RESPONSIVE
@@ -1248,13 +1243,10 @@
        SCREEN 2: CELEBRATION + PHOTOS
        ============================================================ -->
   <div class="screen" id="screen-celebration">
-    <div class="yay-header" id="yay-header">YAY!</div>
-    <div class="celebration-message" id="celebration-msg">You just made me the happiest person!</div>
-
-    <!-- Together Counter (Feature 3) -->
-    <div class="together-counter" id="together-counter">
-      <div class="counter-number">♥ <span id="days-together">0</span> days ♥</div>
-      <div class="counter-label">...of loving you and counting</div>
+    <div class="celebration-hero" id="celebration-hero">
+      <div class="yay-header" id="yay-header">YAY!</div>
+      <div class="hero-days" id="hero-days"><span id="days-together">0</span> days of loving you</div>
+      <div class="celebration-message" id="celebration-msg">You just made me the happiest person!</div>
     </div>
 
     <!-- Reasons I Love You -->
@@ -1553,12 +1545,12 @@
     function animateCelebration() {
       var yay = document.getElementById('yay-header');
       var msg = document.getElementById('celebration-msg');
-      var counter = document.getElementById('together-counter');
+      var heroDays = document.getElementById('hero-days');
       msg.textContent = CELEBRATION_MESSAGE;
 
       setTimeout(function() { yay.classList.add('animate-in'); }, 100);
-      setTimeout(function() { msg.classList.add('animate-in'); }, 300);
-      setTimeout(function() { counter.classList.add('animate-in'); }, 500);
+      setTimeout(function() { heroDays.classList.add('animate-in'); }, 300);
+      setTimeout(function() { msg.classList.add('animate-in'); }, 500);
 
       /* Observe reason items for scroll-based fade-in */
       var reasons = document.querySelectorAll('.reason-item');
