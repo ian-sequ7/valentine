@@ -1642,6 +1642,7 @@
 
       if (photo.src) {
         var img = document.createElement('img');
+        img.onload = function() { this.classList.add('loaded'); };
         img.src = photo.src;
         img.alt = photo.caption;
         imgEl.appendChild(img);
