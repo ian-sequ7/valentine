@@ -668,6 +668,158 @@
     }
 
     /* ============================================================
+       SCREEN 4: LOVE LETTER
+       ============================================================ */
+    #screen-letter {
+      padding: 48px 20px 80px;
+      background: var(--bg-warm);
+    }
+
+    .letter-container {
+      background: var(--paper);
+      max-width: 560px;
+      width: 100%;
+      padding: 48px 40px 56px;
+      border-radius: 4px;
+      position: relative;
+      box-shadow:
+        0 2px 8px var(--shadow-deep),
+        0 12px 40px rgba(61, 44, 46, 0.06);
+    }
+
+    /* Subtle fold line across the top quarter */
+    .letter-fold {
+      position: absolute;
+      top: 25%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(61, 44, 46, 0.04) 20%, rgba(61, 44, 46, 0.06) 50%, rgba(61, 44, 46, 0.04) 80%, transparent);
+    }
+
+    /* Faint ruled lines */
+    .letter-container::before {
+      content: '';
+      position: absolute;
+      top: 100px;
+      left: 40px;
+      right: 40px;
+      bottom: 56px;
+      background-image: repeating-linear-gradient(
+        transparent,
+        transparent 31px,
+        rgba(199, 91, 122, 0.06) 31px,
+        rgba(199, 91, 122, 0.06) 32px
+      );
+      pointer-events: none;
+    }
+
+    /* Left margin line */
+    .letter-container::after {
+      content: '';
+      position: absolute;
+      top: 48px;
+      bottom: 56px;
+      left: 36px;
+      width: 1px;
+      background: rgba(199, 91, 122, 0.12);
+      pointer-events: none;
+    }
+
+    .letter-date {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-light);
+      text-align: right;
+      margin-bottom: 28px;
+      opacity: 0.7;
+    }
+
+    .letter-greeting {
+      font-family: 'Caveat', cursive;
+      font-weight: 700;
+      font-size: 32px;
+      color: var(--secondary);
+      margin-bottom: 24px;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .letter-greeting.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .letter-paragraph {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 2;
+      color: var(--text);
+      margin-bottom: 20px;
+      text-indent: 24px;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .letter-paragraph.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .letter-closing {
+      margin-top: 36px;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.6s ease 0.3s, transform 0.6s ease 0.3s;
+    }
+
+    .letter-closing.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .letter-sign-off {
+      display: block;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 500;
+      font-style: italic;
+      color: var(--text);
+      line-height: 1.8;
+    }
+
+    .letter-signature {
+      margin-top: 28px;
+      text-align: right;
+    }
+
+    .letter-dash {
+      display: block;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-light);
+      font-style: italic;
+    }
+
+    .letter-name {
+      display: block;
+      font-family: 'Caveat', cursive;
+      font-weight: 700;
+      font-size: 36px;
+      color: var(--secondary);
+      margin-top: 4px;
+    }
+
+    .letter-btn {
+      margin-top: 40px;
+    }
+
+    /* ============================================================
        MOBILE RESPONSIVE
        ============================================================ */
     @media (max-width: 600px) {
@@ -723,6 +875,36 @@
 
       .reasons-title,
       .gallery-title {
+        font-size: 30px;
+      }
+
+      /* Letter mobile adjustments */
+      .letter-container {
+        padding: 36px 28px 44px;
+      }
+
+      .letter-container::before {
+        left: 28px;
+        right: 28px;
+        top: 88px;
+      }
+
+      .letter-container::after {
+        left: 24px;
+        top: 36px;
+        bottom: 44px;
+      }
+
+      .letter-greeting {
+        font-size: 28px;
+      }
+
+      .letter-paragraph {
+        font-size: 14px;
+        text-indent: 20px;
+      }
+
+      .letter-name {
         font-size: 30px;
       }
     }
@@ -797,6 +979,27 @@
     <div class="timeline" id="timeline"></div>
     <div class="footer-heart">&#10084;</div>
     <div class="footer-text">Happy Valentine's Day, my love</div>
+    <button class="btn-next letter-btn" onclick="showScreen('screen-letter')">P.S. I didn't forget your letter &#128140;</button>
+  </div>
+
+  <!-- ============================================================
+       SCREEN 4: LOVE LETTER
+       ============================================================ -->
+  <div class="screen" id="screen-letter">
+    <div class="letter-container">
+      <div class="letter-fold"></div>
+      <div class="letter-date">February 14, 2026</div>
+      <div class="letter-greeting">My sweet girl,</div>
+      <div class="letter-body" id="letter-body"></div>
+      <div class="letter-closing">
+        <span class="letter-sign-off">I see you, I understand you, I feel you, I love you, I love us.</span>
+        <span class="letter-sign-off">Now and for the rest of our lives.</span>
+        <div class="letter-signature">
+          <span class="letter-dash">— your ever loving man,</span>
+          <span class="letter-name">Ian &#10084;&#65039;&#128139;</span>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- ============================================================
@@ -868,6 +1071,17 @@
     const CELEBRATION_MESSAGE = "THANK THE LORD!! You just made me the happiest man ALIVE! \u{1F495}";
 
     const EASTER_EGG_MESSAGE = "FIRST TRY I KNEW YOU COULDNT RESIST!! \u{1F9A4}";
+
+    const LOVE_LETTER = [
+      "Happy Valentine's Day my beautiful angel. I have been sitting here trying to figure out how to put everything I feel about you into words, and honestly? I don't think words will ever be enough. But I'm going to try because you deserve to hear it, to read it, to feel it, to KNOW it.",
+      "You are the greatest gift God has ever given me. And I do not say that lightly. I have prayed for someone like you my entire life, someone who fills me up, who walks with me in faith, who makes me laugh until I can't breathe, who makes even the most ordinary moments feel like the most extraordinary ones. And then He gave me YOU. My black coffee. My fruit bat. My kitty kat. My squishy. My everything.",
+      "I think about all the little things that make us US and it makes my heart so full it could burst. The way we can talk for hours about absolutely nothing and it feels like the most important conversation in the world. The way you look at me and I just KNOW. The way we pray together and I feel God's presence so strongly between us. The way you believe in me even when I struggle to believe in myself. You replenish me in ways I cannot fully explain.",
+      "Ms. President, I want you to know that I am so fully, so completely, so unshakably committed to you and to us and to the future we are building together. Brick by brick, day by day, prayer by prayer. I see our life together so clearly in my heart and it is the most beautiful thing I have ever seen. Every adventure, every quiet night, every Sunday morning, every hard day, every celebration, I want ALL of it with you.",
+      "Being with you does not drain me. You replenish me. You make me better just by being you. You are my safe place, my joy, my laughter, my comfort, my home. You are the person I can be entirely myself around, every side, every flaw, every dream, and you love me through all of it. I have never felt this way about anyone.",
+      "So today, on Valentine's Day, I want you to know this: I love you so purely and completely. I love the way our hearts connect, the way our souls laugh together, the way we are building a life full of love, faith, and joy. How blissful, how amazing. I cannot praise God ENOUGH for you.",
+      "Now put this letter down and come enjoy your day, because I planned the whole thing just for you. Every single moment is for you. Because you deserve the world and I'm going to spend every day trying to give it to you.",
+      "I love you, my beautiful angel, my godly woman, my Valentine. Today, tomorrow, and for the rest of our lives. \u2764\uFE0F"
+    ];
 
     /* ==============================================================
        PROPOSAL LOGIC (Screen 1)
@@ -987,6 +1201,9 @@
         if (targetId === 'screen-itinerary') {
           observeTimelineItems();
         }
+        if (targetId === 'screen-letter') {
+          animateLetter();
+        }
 
         /* Hide floating hearts on non-proposal screens */
         document.getElementById('hearts-bg').style.display =
@@ -1042,6 +1259,33 @@
         item.style.transitionDelay = (i * 0.15) + 's';
         observer.observe(item);
       });
+    }
+
+    /* ==============================================================
+       SCREEN 4: LOVE LETTER ANIMATION
+       ============================================================== */
+
+    function animateLetter() {
+      var paragraphs = document.querySelectorAll('.letter-paragraph');
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+
+      paragraphs.forEach(function(p, i) {
+        p.style.transitionDelay = (i * 0.12) + 's';
+        observer.observe(p);
+      });
+
+      /* Also animate the greeting and closing */
+      var greeting = document.querySelector('.letter-greeting');
+      var closing = document.querySelector('.letter-closing');
+      setTimeout(function() { greeting.classList.add('visible'); }, 200);
+      setTimeout(function() { closing.classList.add('visible'); }, 600);
     }
 
     /* ==============================================================
@@ -1183,6 +1427,17 @@
       });
     }
 
+    /* Generate letter paragraphs */
+    function createLetterContent() {
+      var container = document.getElementById('letter-body');
+      LOVE_LETTER.forEach(function(paragraph) {
+        var p = document.createElement('p');
+        p.className = 'letter-paragraph';
+        p.textContent = paragraph;
+        container.appendChild(p);
+      });
+    }
+
     /* ==============================================================
        INITIALIZATION
        ============================================================== */
@@ -1192,6 +1447,7 @@
       createReasonsList();
       createPhotoGrid();
       createTimeline();
+      createLetterContent();
     });
   </script>
 </body>
