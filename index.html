@@ -4,6 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Will You Be My Valentine?</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>❤️</text></svg>">
+  <meta property="og:title" content="A Valentine For You 💌">
+  <meta property="og:description" content="Someone special made this just for you...">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#d4424d">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=DM+Sans:wght@400;500;600;700&family=Homemade+Apple&display=swap" rel="stylesheet">
@@ -225,6 +230,10 @@
       color: var(--secondary);
     }
 
+    .btn:active {
+      transform: scale(0.95);
+    }
+
     /* Easter egg message */
     .easter-egg-msg {
       position: fixed;
@@ -417,6 +426,12 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .polaroid-img img.loaded {
+      opacity: 1;
     }
 
     .polaroid-caption {
@@ -514,6 +529,10 @@
     .btn-next:hover {
       box-shadow: 0 8px 24px var(--shadow-soft);
       transform: translateY(-2px);
+    }
+
+    .btn-next:active {
+      transform: scale(0.97);
     }
 
     /* ============================================================
@@ -1718,7 +1737,7 @@
 
         var imgHTML;
         if (photo.src) {
-          imgHTML = '<div class="polaroid-img"><img src="' + photo.src + '" alt="' + photo.caption + '" loading="lazy"></div>';
+          imgHTML = '<div class="polaroid-img"><img src="' + photo.src + '" alt="' + photo.caption + '" loading="lazy" onload="this.classList.add(\'loaded\')"></div>';
         } else {
           imgHTML = '<div class="polaroid-img">Photo</div>';
         }
